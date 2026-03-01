@@ -47,5 +47,13 @@
 - Flutter advisory screen with ask flow and one-tap apply actions
 - Automated backend tests for ask/apply behavior
 
+## Phase 7 (Done)
+- Goals CRUD-lite endpoints (`/goals`, `/goals/{id}/contribute`) with progress/on-track calculations
+- Weekly digest endpoint and digest settings endpoints (`/digest/weekly`, `/digest/settings`)
+- Digest preferences persistence (`frequency`, `day`, `time`)
+- Flutter goals screen with create/list/contribute interactions
+- Flutter digest screen with settings and weekly summary rendering
+- Automated backend tests for goals and digest flows
+
 ## Next
-Phase 7 builds goals tracking + weekly digest workflows and surfaces.
+Phase 8 focuses on deployment readiness and hardening (auth, migrations, observability, production config, and final UI polish pass).

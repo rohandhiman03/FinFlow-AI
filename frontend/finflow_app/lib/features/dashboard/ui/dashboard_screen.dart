@@ -5,18 +5,22 @@ import 'package:flutter/material.dart';
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({
     super.key,
+    required this.onOpenAdvisory,
+    required this.onOpenDigest,
+    required this.onOpenGoals,
     required this.api,
     required this.onRestartOnboarding,
     required this.onOpenStatements,
     required this.onOpenReports,
-    required this.onOpenAdvisory,
   });
 
+  final VoidCallback onOpenAdvisory;
+  final VoidCallback onOpenDigest;
+  final VoidCallback onOpenGoals;
   final DashboardApi api;
   final VoidCallback onRestartOnboarding;
   final VoidCallback onOpenStatements;
   final VoidCallback onOpenReports;
-  final VoidCallback onOpenAdvisory;
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -122,6 +126,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         title: const Text('FinFlow AI - Phase 3 Dashboard'),
         actions: [
+          TextButton(
+            onPressed: widget.onOpenGoals,
+            child: const Text('Goals'),
+          ),
+          TextButton(
+            onPressed: widget.onOpenDigest,
+            child: const Text('Digest'),
+          ),
           TextButton(
             onPressed: widget.onOpenAdvisory,
             child: const Text('Ask'),

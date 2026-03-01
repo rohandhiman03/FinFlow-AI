@@ -52,6 +52,20 @@ AI-native personal finance platform.
 - Reasoning traces included in responses for transparency.
 - Flutter advisory chat screen with one-tap suggestion apply.
 
+## Phase 7 Delivered
+- Goals tracking endpoints:
+  - `POST /api/v1/goals`
+  - `GET /api/v1/goals`
+  - `POST /api/v1/goals/{goal_id}/contribute`
+- Weekly digest + settings endpoints:
+  - `GET /api/v1/digest/weekly`
+  - `GET /api/v1/digest/settings`
+  - `PUT /api/v1/digest/settings`
+- Goal progress computation (`progress %`, `required monthly`, `on track`).
+- Digest generation with weekly summary, category watch, savings rate, and upcoming expenses.
+- Flutter goals screen for create/list/contribute.
+- Flutter digest screen for settings + weekly digest view.
+
 ## Backend Quickstart
 ```bash
 cd backend
@@ -99,6 +113,20 @@ GET /api/v1/reports/history
 ```http
 POST /api/v1/advisory/ask
 POST /api/v1/advisory/apply
+```
+
+### Goals API
+```http
+POST /api/v1/goals
+GET /api/v1/goals
+POST /api/v1/goals/{goal_id}/contribute
+```
+
+### Digest API
+```http
+GET /api/v1/digest/weekly
+GET /api/v1/digest/settings
+PUT /api/v1/digest/settings
 ```
 
 ## Frontend Quickstart (Android emulator)

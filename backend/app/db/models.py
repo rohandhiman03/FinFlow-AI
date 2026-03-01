@@ -178,3 +178,17 @@ class AdvisorySuggestion(Base):
     adjustments: Mapped[dict] = mapped_column(JSON, default=dict)
     status: Mapped[str] = mapped_column(String(20), default="proposed")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+
+class UserPreference(Base):
+    __tablename__ = "user_preferences"
+
+    user_id: Mapped[str] = mapped_column(String(64), ForeignKey("users.id"), primary_key=True)
+    digest_frequency: Mapped[str] = mapped_column(String(20), default="weekly")
+    digest_day: Mapped[str] = mapped_column(String(16), default="Sunday")
+    digest_time: Mapped[str] = mapped_column(String(8), default="09:00")
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )

@@ -122,3 +122,20 @@ class StatementEntry(Base):
     status: Mapped[str] = mapped_column(String(20), default="unmatched")
     matched_transaction_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("transactions.id"), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+
+class FinancialReport(Base):
+    __tablename__ = "financial_reports"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    user_id: Mapped[str] = mapped_column(String(64), ForeignKey("users.id"), index=True)
+    budget_id: Mapped[str] = mapped_column(String(36), ForeignKey("budgets.id"), index=True)
+    month: Mapped[str] = mapped_column(String(7), index=True)  # YYYY-MM
+    overall_score: Mapped[float] = mapped_column(Float)
+    grade: Mapped[str] = mapped_column(String(2))
+    narrative: Mapped[str] = mapped_column(Text)
+    dimensions: Mapped[dict] = mapped_column(JSON, default=dict)
+    category_performance: Mapped[dict] = mapped_column(JSON, default=dict)
+    insights: Mapped[dict] = mapped_column(JSON, default=dict)
+    recommendation: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))

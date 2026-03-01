@@ -30,5 +30,14 @@
 - Flutter statements screen for upload, reconciliation review, and confirmation
 - Automated backend tests for upload/reconciliation/confirmation flow
 
+## Phase 5 (Done)
+- Financial report generation endpoint (`/reports/generate`)
+- Latest report + history endpoints (`/reports/latest`, `/reports/history`)
+- Financial health score engine with 5 scored dimensions and grade output
+- Category performance and insight extraction from real monthly data
+- One prioritized recommendation per report
+- Flutter reports screen with generate and latest report rendering
+- Automated backend tests for report generation and retrieval
+
 ## Next
-Phase 5 builds financial health report generation + score computation and exposes report/history UI in app.
+Phase 6 builds advisory Q&A with scenario analysis and budget adjustment execution.

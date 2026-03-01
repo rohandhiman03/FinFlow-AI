@@ -2,6 +2,8 @@ import 'package:finflow_app/features/dashboard/data/dashboard_api.dart';
 import 'package:finflow_app/features/dashboard/ui/dashboard_screen.dart';
 import 'package:finflow_app/features/onboarding/data/onboarding_api.dart';
 import 'package:finflow_app/features/onboarding/ui/onboarding_chat_screen.dart';
+import 'package:finflow_app/features/reports/data/reports_api.dart';
+import 'package:finflow_app/features/reports/ui/reports_screen.dart';
 import 'package:finflow_app/features/statements/data/statements_api.dart';
 import 'package:finflow_app/features/statements/ui/statements_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +24,13 @@ class FinFlowApp extends StatelessWidget {
     this.onboardingApi,
     this.dashboardApi,
     this.statementsApi,
+    this.reportsApi,
   });
 
   final OnboardingApi? onboardingApi;
   final DashboardApi? dashboardApi;
   final StatementsApi? statementsApi;
+  final ReportsApi? reportsApi;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,7 @@ class FinFlowApp extends StatelessWidget {
         onboardingApi: onboardingApi ?? BackendOnboardingApi(),
         dashboardApi: dashboardApi ?? BackendDashboardApi(),
         statementsApi: statementsApi ?? BackendStatementsApi(),
+        reportsApi: reportsApi ?? BackendReportsApi(),
       ),
     );
   }
@@ -51,11 +56,13 @@ class FinFlowAppShell extends StatefulWidget {
     required this.onboardingApi,
     required this.dashboardApi,
     required this.statementsApi,
+    required this.reportsApi,
   });
 
   final OnboardingApi onboardingApi;
   final DashboardApi dashboardApi;
   final StatementsApi statementsApi;
+  final ReportsApi reportsApi;
 
   @override
   State<FinFlowAppShell> createState() => _FinFlowAppShellState();
@@ -117,6 +124,13 @@ class _FinFlowAppShellState extends State<FinFlowAppShell> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => StatementsScreen(api: widget.statementsApi),
+          ),
+        );
+      },
+      onOpenReports: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => ReportsScreen(api: widget.reportsApi),
           ),
         );
       },

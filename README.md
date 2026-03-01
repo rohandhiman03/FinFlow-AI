@@ -37,6 +37,14 @@ AI-native personal finance platform.
 - Statement persistence with entries and reconciliation status.
 - Flutter statements screen with upload (CSV paste), list, reconciliation, and gap confirmation.
 
+## Phase 5 Delivered
+- `POST /api/v1/reports/generate` financial report generation.
+- `GET /api/v1/reports/latest` latest report retrieval.
+- `GET /api/v1/reports/history` report history retrieval.
+- Financial score engine across five dimensions with grade output.
+- AI-style narrative, insights, category performance, and one prioritized recommendation.
+- Flutter reports screen with latest report view and manual regenerate action.
+
 ## Backend Quickstart
 ```bash
 cd backend
@@ -71,6 +79,13 @@ POST /api/v1/statements/upload
 GET /api/v1/statements
 GET /api/v1/statements/{statement_id}/reconciliation
 POST /api/v1/statements/{statement_id}/gaps/{entry_id}/confirm
+```
+
+### Reports API
+```http
+POST /api/v1/reports/generate
+GET /api/v1/reports/latest
+GET /api/v1/reports/history
 ```
 
 ## Frontend Quickstart (Android emulator)

@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.ai.factory import get_provider
 from app.core.config import get_settings
+from app.core.security.dependencies import get_request_user_id
 from app.db import get_db
 from app.schemas.onboarding import OnboardingMessageRequest, OnboardingResponse, OnboardingStartRequest
 from app.services.onboarding import handle_onboarding_message, start_onboarding_session
@@ -14,9 +15,8 @@ router = APIRouter(prefix="/onboarding", tags=["onboarding"])
 def start_onboarding(
     payload: OnboardingStartRequest,
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> OnboardingResponse:
-    user_id = x_user_id or "demo-user"
     settings = get_settings()
     provider = get_provider(settings)
     return start_onboarding_session(db=db, user_id=user_id, provider=provider.name, reset_existing=payload.reset_existing)
@@ -26,9 +26,8 @@ def start_onboarding(
 def onboarding_message(
     payload: OnboardingMessageRequest,
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> OnboardingResponse:
-    user_id = x_user_id or "demo-user"
     settings = get_settings()
     provider = get_provider(settings)
     try:

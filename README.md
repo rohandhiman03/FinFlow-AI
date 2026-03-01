@@ -66,6 +66,30 @@ AI-native personal finance platform.
 - Flutter goals screen for create/list/contribute.
 - Flutter digest screen for settings + weekly digest view.
 
+## Phase 8 Delivered
+- Authentication endpoints:
+  - `POST /api/v1/auth/register`
+  - `POST /api/v1/auth/login`
+  - `GET /api/v1/auth/me`
+- Config-driven auth mode:
+  - `AUTH_ENABLED=true` enforces Bearer JWT auth.
+  - `AUTH_ENABLED=false` keeps dev-mode identity fallback (`X-User-Id` or `demo-user`).
+- Shared request identity dependency applied across onboarding, transactions, statements, reports, advisory, goals, and digest routes.
+- Health hardening with liveness/readiness:
+  - `GET /api/v1/health/live`
+  - `GET /api/v1/health/ready`
+- Operational middleware:
+  - Request ID propagation (`x-request-id`)
+  - Request timing/access logging
+  - CORS config via `CORS_ALLOW_ORIGINS`
+  - Trusted host middleware
+- Deployment readiness:
+  - `backend/Dockerfile`
+  - `docker-compose.yml`
+  - migration bootstrap script (`backend/scripts/migrate.py`)
+  - CI pipeline (`.github/workflows/ci.yml`) for backend and frontend checks
+- Backend auth tests and frontend theme baseline polish.
+
 ## Backend Quickstart
 ```bash
 cd backend
@@ -80,6 +104,16 @@ Set AI provider in `.env`:
 
 ```env
 AI_PROVIDER=claude  # claude | gemini | grok
+```
+
+Enable production-style auth in `.env`:
+
+```env
+AUTH_ENABLED=true
+JWT_SECRET_KEY=replace-with-a-long-random-secret
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=120
+CORS_ALLOW_ORIGINS=http://localhost:3000,http://10.0.2.2:8000
 ```
 
 ### Onboarding API
@@ -127,6 +161,25 @@ POST /api/v1/goals/{goal_id}/contribute
 GET /api/v1/digest/weekly
 GET /api/v1/digest/settings
 PUT /api/v1/digest/settings
+```
+
+### Auth API
+```http
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+GET /api/v1/auth/me
+```
+
+### Health API
+```http
+GET /api/v1/health
+GET /api/v1/health/live
+GET /api/v1/health/ready
+```
+
+## Docker Quickstart
+```bash
+docker compose up --build
 ```
 
 ## Frontend Quickstart (Android emulator)

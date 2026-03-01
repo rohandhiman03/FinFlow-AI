@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.core.security.dependencies import get_request_user_id
 from app.db import get_db
 from app.schemas.digest import DigestSettingsRequest, DigestSettingsResponse, WeeklyDigestResponse
 from app.services.digest import generate_weekly_digest, get_digest_settings, update_digest_settings
@@ -11,9 +12,8 @@ router = APIRouter(prefix="/digest", tags=["digest"])
 @router.get("/settings", response_model=DigestSettingsResponse)
 def get_settings_route(
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> DigestSettingsResponse:
-    user_id = x_user_id or "demo-user"
     return get_digest_settings(db=db, user_id=user_id)
 
 
@@ -21,9 +21,8 @@ def get_settings_route(
 def update_settings_route(
     payload: DigestSettingsRequest,
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> DigestSettingsResponse:
-    user_id = x_user_id or "demo-user"
     return update_digest_settings(
         db=db,
         user_id=user_id,
@@ -36,9 +35,8 @@ def update_settings_route(
 @router.get("/weekly", response_model=WeeklyDigestResponse)
 def weekly_digest_route(
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> WeeklyDigestResponse:
-    user_id = x_user_id or "demo-user"
     try:
         return generate_weekly_digest(db=db, user_id=user_id)
     except ValueError as exc:

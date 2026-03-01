@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.routes import advisory, ai, digest, goals, health, onboarding, reports, statements, transactions
+from app.api.routes import advisory, ai, auth, digest, goals, health, onboarding, reports, statements, transactions
 from app.core.config import get_settings
 
 router = APIRouter()
@@ -8,6 +8,7 @@ settings = get_settings()
 
 router.include_router(health.router)
 router.include_router(ai.router)
+router.include_router(auth.router)
 router.include_router(onboarding.router)
 router.include_router(transactions.router)
 router.include_router(statements.router)

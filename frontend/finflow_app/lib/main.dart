@@ -12,6 +12,7 @@ import 'package:finflow_app/features/reports/data/reports_api.dart';
 import 'package:finflow_app/features/reports/ui/reports_screen.dart';
 import 'package:finflow_app/features/statements/data/statements_api.dart';
 import 'package:finflow_app/features/statements/ui/statements_screen.dart';
+import 'package:finflow_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -49,9 +50,7 @@ class FinFlowApp extends StatelessWidget {
     return MaterialApp(
       title: 'FinFlow AI',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6C63FF)),
-      ),
+      theme: FinFlowTheme.light(),
       home: FinFlowAppShell(
         advisoryApi: advisoryApi ?? BackendAdvisoryApi(),
         digestApi: digestApi ?? BackendDigestApi(),

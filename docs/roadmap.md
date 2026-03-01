@@ -55,5 +55,17 @@
 - Flutter digest screen with settings and weekly summary rendering
 - Automated backend tests for goals and digest flows
 
+## Phase 8 (Done)
+- Auth/account endpoints (`/auth/register`, `/auth/login`, `/auth/me`)
+- JWT-based auth mode controlled by `AUTH_ENABLED`
+- Shared identity dependency integrated across all business routes
+- Liveness/readiness health endpoints (`/health/live`, `/health/ready`)
+- Request logging middleware with request-id propagation
+- Configurable CORS and trusted-host middleware
+- Migration bootstrap script for DB initialization (`backend/scripts/migrate.py`)
+- Containerization assets (`backend/Dockerfile`, root `docker-compose.yml`)
+- CI workflow for backend tests and frontend analyze/test
+- Backend auth flow tests and frontend theme baseline polish
+
 ## Next
-Phase 8 focuses on deployment readiness and hardening (auth, migrations, observability, production config, and final UI polish pass).
+Phase 9 focuses on production rollout: secrets management, managed database migration strategy, staging environment, release automation, and mobile distribution pipeline.

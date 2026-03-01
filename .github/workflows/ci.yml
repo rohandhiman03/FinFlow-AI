@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          . .venv/bin/activate
+          pip install -r requirements-dev.txt
+      - name: Run tests
+        run: |
+          . .venv/bin/activate
+          pytest -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend/finflow_app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze
+      - name: Test
+        run: flutter test

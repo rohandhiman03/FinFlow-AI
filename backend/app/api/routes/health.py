@@ -17,3 +17,14 @@ def health_check() -> dict[str, str | bool]:
         "debug": settings.app_debug,
         "ai_provider": provider.name,
     }
+
+
+@router.get("/live")
+def liveness() -> dict[str, str]:
+    return {"status": "alive"}
+
+
+@router.get("/ready")
+def readiness() -> dict[str, str]:
+    # Lightweight readiness; DB init runs at startup.
+    return {"status": "ready"}

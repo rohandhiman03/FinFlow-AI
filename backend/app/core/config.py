@@ -13,6 +13,13 @@ class Settings(BaseSettings):
 
     database_url: str = Field(default="sqlite:///./finflow.db")
 
+    auth_enabled: bool = Field(default=False)
+    jwt_secret_key: str = Field(default="change-me-in-production")
+    jwt_algorithm: str = Field(default="HS256")
+    access_token_expire_minutes: int = Field(default=120)
+
+    cors_allow_origins: str = Field(default="*")
+
     ai_provider: str = Field(default="claude")
     claude_api_key: str | None = None
     gemini_api_key: str | None = None
@@ -21,6 +28,12 @@ class Settings(BaseSettings):
     @property
     def supported_ai_providers(self) -> tuple[str, ...]:
         return ("claude", "gemini", "grok")
+
+    @property
+    def cors_origins_list(self) -> list[str]:
+        if self.cors_allow_origins.strip() == "*":
+            return ["*"]
+        return [item.strip() for item in self.cors_allow_origins.split(",") if item.strip()]
 
 
 @lru_cache

@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
+from app.core.security.dependencies import get_request_user_id
 from app.db import get_db
 from app.schemas.statements import (
     ConfirmGapRequest,
@@ -19,9 +20,8 @@ async def upload_statement_route(
     file: UploadFile = File(...),
     account_name: str = Form(default="Primary Account"),
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> StatementUploadResponse:
-    user_id = x_user_id or "demo-user"
     content = await file.read()
     try:
         return upload_statement(
@@ -38,9 +38,8 @@ async def upload_statement_route(
 @router.get("", response_model=list[StatementListItem])
 def list_statements_route(
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> list[StatementListItem]:
-    user_id = x_user_id or "demo-user"
     return list_statements(db=db, user_id=user_id)
 
 
@@ -48,9 +47,8 @@ def list_statements_route(
 def get_reconciliation_route(
     statement_id: str,
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> ReconciliationResponse:
-    user_id = x_user_id or "demo-user"
     try:
         return get_reconciliation(db=db, user_id=user_id, statement_id=statement_id)
     except ValueError as exc:
@@ -63,9 +61,8 @@ def confirm_gap_route(
     entry_id: str,
     payload: ConfirmGapRequest,
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> ConfirmGapResponse:
-    user_id = x_user_id or "demo-user"
     try:
         return confirm_gap(
             db=db,

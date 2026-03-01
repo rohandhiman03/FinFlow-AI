@@ -192,3 +192,12 @@ class UserPreference(Base):
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
     )
+
+
+class ApiAccount(Base):
+    __tablename__ = "api_accounts"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))

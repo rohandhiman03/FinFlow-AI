@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.core.security.dependencies import get_request_user_id
 from app.db import get_db
 from app.schemas.transactions import BudgetSummaryResponse, ExpenseLogRequest, ExpenseLogResponse
 from app.services.transactions import get_budget_summary, log_expense
@@ -12,9 +13,8 @@ router = APIRouter(prefix="/transactions", tags=["transactions"])
 def log_transaction(
     payload: ExpenseLogRequest,
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> ExpenseLogResponse:
-    user_id = x_user_id or "demo-user"
     try:
         return log_expense(db=db, user_id=user_id, message=payload.message)
     except ValueError as exc:
@@ -24,9 +24,8 @@ def log_transaction(
 @router.get("/budget-summary", response_model=BudgetSummaryResponse)
 def budget_summary(
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> BudgetSummaryResponse:
-    user_id = x_user_id or "demo-user"
     try:
         return get_budget_summary(db=db, user_id=user_id)
     except ValueError as exc:

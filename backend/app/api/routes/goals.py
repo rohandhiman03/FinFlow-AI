@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.core.security.dependencies import get_request_user_id
 from app.db import get_db
 from app.schemas.goals import GoalContributeRequest, GoalContributeResponse, GoalCreateRequest, GoalItem
 from app.services.goals import contribute_to_goal, create_goal, list_goals
@@ -12,9 +13,8 @@ router = APIRouter(prefix="/goals", tags=["goals"])
 def create_goal_route(
     payload: GoalCreateRequest,
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> GoalItem:
-    user_id = x_user_id or "demo-user"
     return create_goal(
         db=db,
         user_id=user_id,
@@ -27,9 +27,8 @@ def create_goal_route(
 @router.get("", response_model=list[GoalItem])
 def list_goals_route(
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> list[GoalItem]:
-    user_id = x_user_id or "demo-user"
     return list_goals(db=db, user_id=user_id)
 
 
@@ -38,9 +37,8 @@ def contribute_goal_route(
     goal_id: str,
     payload: GoalContributeRequest,
     db: Session = Depends(get_db),
-    x_user_id: str | None = Header(default=None),
+    user_id: str = Depends(get_request_user_id),
 ) -> GoalContributeResponse:
-    user_id = x_user_id or "demo-user"
     try:
         return contribute_to_goal(db=db, user_id=user_id, goal_id=goal_id, amount=payload.amount)
     except ValueError as exc:

@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     app_debug: bool = Field(default=True)
     api_v1_prefix: str = "/api/v1"
 
+    database_url: str = Field(default="sqlite:///./finflow.db")
+
     ai_provider: str = Field(default="claude")
     claude_api_key: str | None = None
     gemini_api_key: str | None = None

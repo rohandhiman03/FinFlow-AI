@@ -1,17 +1,25 @@
 # FinFlow AI Delivery Roadmap
 
-## Phase 1 (Current)
+## Phase 1 (Done)
 - Monorepo bootstrap
 - FastAPI app skeleton
 - Central config and environment loading
 - AI provider switching (`claude`, `gemini`, `grok`)
 - Health endpoints and tests
 
-## Definition Of Done For Phase 1
-- Backend starts locally
-- `/api/v1/health` returns app and provider info
-- `/api/v1/ai/providers` lists supported providers and active provider
-- Unit tests pass
+## Phase 2 (Done)
+- Conversational onboarding backend routes (`/onboarding/start`, `/onboarding/message`)
+- Onboarding state machine and budget proposal generation
+- SQLite persistence for onboarding/budget/goal entities
+- Flutter onboarding chat screen wired to backend
+- Automated tests for onboarding happy path and persistence
+
+## Definition Of Done For Phase 2
+- Backend starts locally and initializes DB
+- Onboarding can be completed end-to-end through API
+- Confirming onboarding stores budget + categories + goal entries
+- Flutter app can complete onboarding conversation against local backend
+- Backend tests and Flutter tests pass
 
 ## Next
-Phase 2 builds the conversational onboarding flow and persists user profile + baseline budget.
+Phase 3 builds natural language expense logging and dashboard cards with real-time budget updates.

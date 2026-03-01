@@ -7,6 +7,7 @@ __pycache__/
 venv/
 .pytest_cache/
 .mypy_cache/
+*.db
 
 # Flutter
 frontend/finflow_app/.dart_tool/

@@ -1,3 +1,5 @@
+import 'package:finflow_app/features/advisory/data/advisory_api.dart';
+import 'package:finflow_app/features/advisory/ui/advisory_screen.dart';
 import 'package:finflow_app/features/dashboard/data/dashboard_api.dart';
 import 'package:finflow_app/features/dashboard/ui/dashboard_screen.dart';
 import 'package:finflow_app/features/onboarding/data/onboarding_api.dart';
@@ -21,12 +23,14 @@ enum AppStage {
 class FinFlowApp extends StatelessWidget {
   const FinFlowApp({
     super.key,
+    this.advisoryApi,
     this.onboardingApi,
     this.dashboardApi,
     this.statementsApi,
     this.reportsApi,
   });
 
+  final AdvisoryApi? advisoryApi;
   final OnboardingApi? onboardingApi;
   final DashboardApi? dashboardApi;
   final StatementsApi? statementsApi;
@@ -41,6 +45,7 @@ class FinFlowApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6C63FF)),
       ),
       home: FinFlowAppShell(
+        advisoryApi: advisoryApi ?? BackendAdvisoryApi(),
         onboardingApi: onboardingApi ?? BackendOnboardingApi(),
         dashboardApi: dashboardApi ?? BackendDashboardApi(),
         statementsApi: statementsApi ?? BackendStatementsApi(),
@@ -53,12 +58,14 @@ class FinFlowApp extends StatelessWidget {
 class FinFlowAppShell extends StatefulWidget {
   const FinFlowAppShell({
     super.key,
+    required this.advisoryApi,
     required this.onboardingApi,
     required this.dashboardApi,
     required this.statementsApi,
     required this.reportsApi,
   });
 
+  final AdvisoryApi advisoryApi;
   final OnboardingApi onboardingApi;
   final DashboardApi dashboardApi;
   final StatementsApi statementsApi;
@@ -131,6 +138,13 @@ class _FinFlowAppShellState extends State<FinFlowAppShell> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => ReportsScreen(api: widget.reportsApi),
+          ),
+        );
+      },
+      onOpenAdvisory: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => AdvisoryScreen(api: widget.advisoryApi),
           ),
         );
       },

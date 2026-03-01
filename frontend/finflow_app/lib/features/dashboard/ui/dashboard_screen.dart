@@ -9,12 +9,14 @@ class DashboardScreen extends StatefulWidget {
     required this.onRestartOnboarding,
     required this.onOpenStatements,
     required this.onOpenReports,
+    required this.onOpenAdvisory,
   });
 
   final DashboardApi api;
   final VoidCallback onRestartOnboarding;
   final VoidCallback onOpenStatements;
   final VoidCallback onOpenReports;
+  final VoidCallback onOpenAdvisory;
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -120,6 +122,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         title: const Text('FinFlow AI - Phase 3 Dashboard'),
         actions: [
+          TextButton(
+            onPressed: widget.onOpenAdvisory,
+            child: const Text('Ask'),
+          ),
           TextButton(
             onPressed: widget.onOpenReports,
             child: const Text('Reports'),

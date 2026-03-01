@@ -45,6 +45,13 @@ AI-native personal finance platform.
 - AI-style narrative, insights, category performance, and one prioritized recommendation.
 - Flutter reports screen with latest report view and manual regenerate action.
 
+## Phase 6 Delivered
+- `POST /api/v1/advisory/ask` scenario-based advisory Q&A from real budget data.
+- `POST /api/v1/advisory/apply` apply AI-suggested budget reallocation.
+- Advisory session/message persistence and suggestion tracking.
+- Reasoning traces included in responses for transparency.
+- Flutter advisory chat screen with one-tap suggestion apply.
+
 ## Backend Quickstart
 ```bash
 cd backend
@@ -86,6 +93,12 @@ POST /api/v1/statements/{statement_id}/gaps/{entry_id}/confirm
 POST /api/v1/reports/generate
 GET /api/v1/reports/latest
 GET /api/v1/reports/history
+```
+
+### Advisory API
+```http
+POST /api/v1/advisory/ask
+POST /api/v1/advisory/apply
 ```
 
 ## Frontend Quickstart (Android emulator)

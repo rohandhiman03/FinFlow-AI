@@ -39,5 +39,13 @@
 - Flutter reports screen with generate and latest report rendering
 - Automated backend tests for report generation and retrieval
 
+## Phase 6 (Done)
+- Advisory Q&A endpoint with scenario evaluation (`/advisory/ask`)
+- Suggestion apply endpoint that updates budget allocations (`/advisory/apply`)
+- Advisory session/message/suggestion persistence for continuity
+- Reasoning traces returned alongside answers
+- Flutter advisory screen with ask flow and one-tap apply actions
+- Automated backend tests for ask/apply behavior
+
 ## Next
-Phase 6 builds advisory Q&A with scenario analysis and budget adjustment execution.
+Phase 7 builds goals tracking + weekly digest workflows and surfaces.

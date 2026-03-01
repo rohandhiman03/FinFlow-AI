@@ -29,6 +29,14 @@ AI-native personal finance platform.
 - Transaction persistence and category mapping.
 - Flutter dashboard with summary card, category progress cards, and persistent expense input.
 
+## Phase 4 Delivered
+- `POST /api/v1/statements/upload` statement upload (CSV/PDF) and parsing.
+- `GET /api/v1/statements` list uploaded statements.
+- `GET /api/v1/statements/{statement_id}/reconciliation` matched/gaps/orphans view.
+- `POST /api/v1/statements/{statement_id}/gaps/{entry_id}/confirm` one-tap gap confirmation.
+- Statement persistence with entries and reconciliation status.
+- Flutter statements screen with upload (CSV paste), list, reconciliation, and gap confirmation.
+
 ## Backend Quickstart
 ```bash
 cd backend
@@ -55,6 +63,14 @@ POST /api/v1/onboarding/message
 ```http
 POST /api/v1/transactions/log
 GET /api/v1/transactions/budget-summary
+```
+
+### Statement API
+```http
+POST /api/v1/statements/upload
+GET /api/v1/statements
+GET /api/v1/statements/{statement_id}/reconciliation
+POST /api/v1/statements/{statement_id}/gaps/{entry_id}/confirm
 ```
 
 ## Frontend Quickstart (Android emulator)

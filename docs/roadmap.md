@@ -22,5 +22,13 @@
 - App shell logic: onboarding if no budget, dashboard if budget exists
 - Automated tests covering transactions and summary updates
 
+## Phase 4 (Done)
+- Statement upload endpoint for CSV/PDF ingestion (`/statements/upload`)
+- Statement reconciliation endpoint with matched/gaps/orphans (`/statements/{id}/reconciliation`)
+- Gap confirmation endpoint to create missing transactions (`/statements/{id}/gaps/{entry_id}/confirm`)
+- Statement/entry persistence models and reconciliation status tracking
+- Flutter statements screen for upload, reconciliation review, and confirmation
+- Automated backend tests for upload/reconciliation/confirmation flow
+
 ## Next
-Phase 4 builds statement upload + reconciliation (PDF/CSV ingestion, gap detection, confirmation workflow).
+Phase 5 builds financial health report generation + score computation and exposes report/history UI in app.

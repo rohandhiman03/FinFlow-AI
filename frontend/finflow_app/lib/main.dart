@@ -2,6 +2,8 @@ import 'package:finflow_app/features/dashboard/data/dashboard_api.dart';
 import 'package:finflow_app/features/dashboard/ui/dashboard_screen.dart';
 import 'package:finflow_app/features/onboarding/data/onboarding_api.dart';
 import 'package:finflow_app/features/onboarding/ui/onboarding_chat_screen.dart';
+import 'package:finflow_app/features/statements/data/statements_api.dart';
+import 'package:finflow_app/features/statements/ui/statements_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,10 +21,12 @@ class FinFlowApp extends StatelessWidget {
     super.key,
     this.onboardingApi,
     this.dashboardApi,
+    this.statementsApi,
   });
 
   final OnboardingApi? onboardingApi;
   final DashboardApi? dashboardApi;
+  final StatementsApi? statementsApi;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,7 @@ class FinFlowApp extends StatelessWidget {
       home: FinFlowAppShell(
         onboardingApi: onboardingApi ?? BackendOnboardingApi(),
         dashboardApi: dashboardApi ?? BackendDashboardApi(),
+        statementsApi: statementsApi ?? BackendStatementsApi(),
       ),
     );
   }
@@ -45,10 +50,12 @@ class FinFlowAppShell extends StatefulWidget {
     super.key,
     required this.onboardingApi,
     required this.dashboardApi,
+    required this.statementsApi,
   });
 
   final OnboardingApi onboardingApi;
   final DashboardApi dashboardApi;
+  final StatementsApi statementsApi;
 
   @override
   State<FinFlowAppShell> createState() => _FinFlowAppShellState();
@@ -105,6 +112,13 @@ class _FinFlowAppShellState extends State<FinFlowAppShell> {
         setState(() {
           _stage = AppStage.onboarding;
         });
+      },
+      onOpenStatements: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => StatementsScreen(api: widget.statementsApi),
+          ),
+        );
       },
     );
   }

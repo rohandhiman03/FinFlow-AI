@@ -8,9 +8,9 @@ AI-native personal finance platform.
 - `docs`: architecture and phase plans.
 
 ## Phase Plan
-1. Phase 1: Foundation (repo, config, backend skeleton, AI provider switching, health checks)
+1. Phase 1: Foundation (repo, config, backend skeleton, health checks)
 2. Phase 2: Conversational onboarding
-3. Phase 3: Expense logging + dashboard
+3. Phase 3: Natural-language expense logging + dashboard
 4. Phase 4: Statement processing + reconciliation
 5. Phase 5: Reports + score
 6. Phase 6: Advisory Q&A
@@ -23,6 +23,12 @@ AI-native personal finance platform.
 - SQLite persistence for users, onboarding messages/sessions, budgets, categories, and goals.
 - Flutter onboarding chat UI connected to backend APIs.
 
+## Phase 3 Delivered
+- `POST /api/v1/transactions/log` natural-language expense logging.
+- `GET /api/v1/transactions/budget-summary` monthly budget aggregation.
+- Transaction persistence and category mapping.
+- Flutter dashboard with summary card, category progress cards, and persistent expense input.
+
 ## Backend Quickstart
 ```bash
 cd backend
@@ -30,7 +36,7 @@ python -m venv .venv
 .venv\\Scripts\\activate
 pip install -r requirements-dev.txt
 copy .env.example .env
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 Set AI provider in `.env`:
@@ -39,25 +45,21 @@ Set AI provider in `.env`:
 AI_PROVIDER=claude  # claude | gemini | grok
 ```
 
-### Onboarding API (Phase 2)
+### Onboarding API
 ```http
 POST /api/v1/onboarding/start
 POST /api/v1/onboarding/message
 ```
 
-Example start payload:
-```json
-{ "reset_existing": true }
+### Transaction API
+```http
+POST /api/v1/transactions/log
+GET /api/v1/transactions/budget-summary
 ```
 
-Example message payload:
-```json
-{ "session_id": "<id>", "message": "Salary 5000 monthly" }
-```
-
-## Frontend Quickstart
+## Frontend Quickstart (Android emulator)
 ```bash
 cd frontend/finflow_app
 flutter pub get
-flutter run --dart-define=API_BASE_URL=http://localhost:8000 --dart-define=AI_PROVIDER=claude
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000 --dart-define=AI_PROVIDER=claude
 ```

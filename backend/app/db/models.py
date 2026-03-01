@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from sqlalchemy import JSON, DateTime, Float, ForeignKey, String, Text
+from sqlalchemy import JSON, Date, DateTime, Float, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
@@ -75,4 +75,19 @@ class Goal(Base):
     target_amount: Mapped[float] = mapped_column(Float)
     target_date: Mapped[str] = mapped_column(String(30), default="")
     current_amount: Mapped[float] = mapped_column(Float, default=0.0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+
+class Transaction(Base):
+    __tablename__ = "transactions"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid4()))
+    user_id: Mapped[str] = mapped_column(String(64), ForeignKey("users.id"), index=True)
+    budget_id: Mapped[str] = mapped_column(String(36), ForeignKey("budgets.id"), index=True)
+    category_id: Mapped[str] = mapped_column(String(36), ForeignKey("budget_categories.id"), index=True)
+    amount: Mapped[float] = mapped_column(Float)
+    merchant: Mapped[str] = mapped_column(String(120), default="")
+    description: Mapped[str] = mapped_column(Text)
+    transaction_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    source_text: Mapped[str] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))

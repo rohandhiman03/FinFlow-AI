@@ -7,9 +7,11 @@ class OnboardingChatScreen extends StatefulWidget {
   const OnboardingChatScreen({
     super.key,
     required this.api,
+    this.onCompleted,
   });
 
   final OnboardingApi api;
+  final VoidCallback? onCompleted;
 
   @override
   State<OnboardingChatScreen> createState() => _OnboardingChatScreenState();
@@ -82,6 +84,9 @@ class _OnboardingChatScreenState extends State<OnboardingChatScreen> {
       setState(() {
         _state = session;
       });
+      if (session.status == 'completed') {
+        widget.onCompleted?.call();
+      }
     } catch (e) {
       if (!mounted) {
         return;
@@ -116,8 +121,7 @@ class _OnboardingChatScreenState extends State<OnboardingChatScreen> {
       ),
       body: Column(
         children: [
-          if (_isLoading)
-            const LinearProgressIndicator(),
+          if (_isLoading) const LinearProgressIndicator(),
           if (session != null)
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),

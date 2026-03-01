@@ -1,3 +1,5 @@
+import 'package:finflow_app/features/dashboard/data/dashboard_api.dart';
+import 'package:finflow_app/features/dashboard/data/models.dart';
 import 'package:finflow_app/features/onboarding/data/models.dart';
 import 'package:finflow_app/features/onboarding/data/onboarding_api.dart';
 import 'package:finflow_app/main.dart';
@@ -48,9 +50,30 @@ class FakeOnboardingApi implements OnboardingApi {
   }
 }
 
+class FakeDashboardApi implements DashboardApi {
+  @override
+  Future<BudgetSummary> getBudgetSummary() async {
+    throw const NoBudgetException('No budget yet');
+  }
+
+  @override
+  Future<ExpenseLogResult> logExpense(String message) async {
+    return const ExpenseLogResult(
+      confirmation: 'ok',
+      amount: 1,
+      categoryName: 'Dining',
+    );
+  }
+}
+
 void main() {
-  testWidgets('renders onboarding chat and initial assistant message', (WidgetTester tester) async {
-    await tester.pumpWidget(FinFlowApp(api: FakeOnboardingApi()));
+  testWidgets('renders onboarding when no budget exists', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      FinFlowApp(
+        onboardingApi: FakeOnboardingApi(),
+        dashboardApi: FakeDashboardApi(),
+      ),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('FinFlow AI - Phase 2 Onboarding'), findsOneWidget);

@@ -14,12 +14,13 @@
 - Flutter onboarding chat screen wired to backend
 - Automated tests for onboarding happy path and persistence
 
-## Definition Of Done For Phase 2
-- Backend starts locally and initializes DB
-- Onboarding can be completed end-to-end through API
-- Confirming onboarding stores budget + categories + goal entries
-- Flutter app can complete onboarding conversation against local backend
-- Backend tests and Flutter tests pass
+## Phase 3 (Done)
+- Natural-language expense log endpoint (`/transactions/log`)
+- Budget summary endpoint (`/transactions/budget-summary`)
+- Transaction table + aggregation for month-to-date spent/remaining/utilization
+- Flutter dashboard screen with category progress bars and persistent expense input
+- App shell logic: onboarding if no budget, dashboard if budget exists
+- Automated tests covering transactions and summary updates
 
 ## Next
-Phase 3 builds natural language expense logging and dashboard cards with real-time budget updates.
+Phase 4 builds statement upload + reconciliation (PDF/CSV ingestion, gap detection, confirmation workflow).

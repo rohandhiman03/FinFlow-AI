@@ -1,3 +1,5 @@
+import 'package:finflow_app/features/dashboard/data/dashboard_api.dart';
+import 'package:finflow_app/features/dashboard/ui/dashboard_screen.dart';
 import 'package:finflow_app/features/onboarding/data/onboarding_api.dart';
 import 'package:finflow_app/features/onboarding/ui/onboarding_chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +8,21 @@ void main() {
   runApp(const FinFlowApp());
 }
 
-class FinFlowApp extends StatelessWidget {
-  const FinFlowApp({super.key, this.api});
+enum AppStage {
+  loading,
+  onboarding,
+  dashboard,
+}
 
-  final OnboardingApi? api;
+class FinFlowApp extends StatelessWidget {
+  const FinFlowApp({
+    super.key,
+    this.onboardingApi,
+    this.dashboardApi,
+  });
+
+  final OnboardingApi? onboardingApi;
+  final DashboardApi? dashboardApi;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +32,80 @@ class FinFlowApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6C63FF)),
       ),
-      home: OnboardingChatScreen(api: api ?? BackendOnboardingApi()),
+      home: FinFlowAppShell(
+        onboardingApi: onboardingApi ?? BackendOnboardingApi(),
+        dashboardApi: dashboardApi ?? BackendDashboardApi(),
+      ),
+    );
+  }
+}
+
+class FinFlowAppShell extends StatefulWidget {
+  const FinFlowAppShell({
+    super.key,
+    required this.onboardingApi,
+    required this.dashboardApi,
+  });
+
+  final OnboardingApi onboardingApi;
+  final DashboardApi dashboardApi;
+
+  @override
+  State<FinFlowAppShell> createState() => _FinFlowAppShellState();
+}
+
+class _FinFlowAppShellState extends State<FinFlowAppShell> {
+  AppStage _stage = AppStage.loading;
+
+  @override
+  void initState() {
+    super.initState();
+    _bootstrap();
+  }
+
+  Future<void> _bootstrap() async {
+    try {
+      await widget.dashboardApi.getBudgetSummary();
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _stage = AppStage.dashboard;
+      });
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _stage = AppStage.onboarding;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_stage == AppStage.loading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    if (_stage == AppStage.onboarding) {
+      return OnboardingChatScreen(
+        api: widget.onboardingApi,
+        onCompleted: () {
+          setState(() {
+            _stage = AppStage.dashboard;
+          });
+        },
+      );
+    }
+
+    return DashboardScreen(
+      api: widget.dashboardApi,
+      onRestartOnboarding: () {
+        setState(() {
+          _stage = AppStage.onboarding;
+        });
+      },
     );
   }
 }

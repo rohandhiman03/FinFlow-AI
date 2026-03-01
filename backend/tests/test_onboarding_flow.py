@@ -17,38 +17,9 @@ def test_onboarding_start_returns_first_prompt(client) -> None:
     assert body["messages"][0]["role"] == "assistant"
 
 
-def test_onboarding_full_flow_creates_budget_and_goal(client) -> None:
-    start = client.post(
-        "/api/v1/onboarding/start",
-        headers={"X-User-Id": "phase2-user"},
-        json={"reset_existing": True},
-    )
-    session_id = start.json()["session_id"]
+def test_onboarding_full_flow_creates_budget_and_goal(client, complete_onboarding) -> None:
+    complete_onboarding("phase2-user")
 
-    sequence = [
-        "Salary 5000 monthly",
-        "Rent 1800, phone 80, internet 60",
-        "Groceries 600, dining 300, transport 200",
-        "Emergency fund 10000",
-        "confirm",
-    ]
-
-    last = None
-    for msg in sequence:
-        last = client.post(
-            "/api/v1/onboarding/message",
-            headers={"X-User-Id": "phase2-user"},
-            json={"session_id": session_id, "message": msg},
-        )
-        assert last.status_code == 200
-
-    assert last is not None
-    body = last.json()
-    assert body["status"] == "completed"
-    assert body["current_step"] == "completed"
-    assert body["budget_proposal"] is not None
-
-    # Validate persistence by checking onboarding generated records exist.
     from app.db.database import SessionLocal
 
     with SessionLocal() as db:
